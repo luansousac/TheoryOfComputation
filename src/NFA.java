@@ -33,7 +33,7 @@ public class NFA {
 	/* Cria um AFN com n estados. */
 	public NFA(int n) {
 		nbStates = n;
-		next = new TreeSet[n];
+		next = new TreeSet[Alphabet.english().size];
 		states = new TreeSet<HalfEdge>();
 		initial = new TreeSet<HalfEdge>();
 		terminal = new TreeSet<HalfEdge>();
@@ -214,14 +214,12 @@ public class NFA {
 		sc.close();
 
 		NFA a = new NFA(str.length() + 1);
-			a.alphabet = new Alphabet(str.toCharArray());
+			//a.alphabet = new Alphabet(str.toCharArray());
+			a.alphabet = Alphabet.english();
 
-		int alphSize = a.states.size();
-		for (int i = 0; i < alphSize - 1; i++) {
-			System.out.println(str.substring(i, i+1));
-//			a.states.add(new HalfEdge(str.substring(i, i+1), i));
-		}
-		for (int i = 0; i < alphSize - 1; i++) {
+		int alphSize = a.alphabet.size();
+		
+		for (int i = 0; i < str.length(); i++) {
 			if (a.alphabet.isIn(str.charAt(i))) {
 				if (i == 0) a.initial.add(new HalfEdge(0));
 				if (i == str.length() - 1) a.terminal.add(new HalfEdge(i + 1));
@@ -231,9 +229,10 @@ public class NFA {
 
 		// Adiciona uma transição para o próprio estado com cada símbolo do
 		// alfabeto. Válido somente para os estados inicial e final.
-		for (int i = 0; i < alphSize - 1; i++) {
+		for (int i = 0; i < alphSize; i++) {
 			a.next[0].add(new HalfEdge("" + a.alphabet.toChar(i), 0));
-			a.next[alphSize - 1].add(new HalfEdge("" + a.alphabet.toChar(i), alphSize - 1));
+			a.next[str.length()].add(new HalfEdge("" + a.alphabet.toChar(i),
+													  str.length()));
 		}
 
 		return a;
@@ -250,26 +249,28 @@ public class NFA {
 	 * call to <code>explore</code> needs a search into the list of sets of
 	 * states (which contains <code>O(m)</code> sets of size <code>O(n)</code>).
 	 */
+
 	@SuppressWarnings("unused")
 	public DFA toDFA() {
 		LinkedList t = new LinkedList(); /* table of sets of states */
 
-		System.out.println(PowerSet.generateAllSubsetsFrom(states));
-		DFA b = new DFA(2^nbStates, alphabet);
+		//System.out.println(PowerSet.generateAllSubsetsFrom(states));
+		DFA b = new DFA(2^nbStates, this.alphabet);
 
 		// calcula o e-closure do estado inicial do AFN (que é também estado
 		// inicial do AFD) para gerar os estados de aceitação (finais)
 
-		for (int i = 0; i < (2^nbStates); i++) {}
+		//System.out.println(closure(initial));
+		//for (int i = 0; i < (2^nbStates); i++) {}
 
-//		Set I = closure(initial);
-//		System.out.println(initial);
-//		t.add(I); /* add I to t */
-//		t = explore(t, 0, b);
-//		b.nbStates = t.size();
-//		b.nbLetters = nbLetters;
-//		b.alphabet = alphabet;
-//		b.initial = 0;
+		Set I = closure(initial);
+		t.add(I); /* add I to t */
+		t = explore(t, 0, b);
+		System.out.println(t);
+		b.nbStates = t.size();
+		b.nbLetters = nbLetters;
+		b.alphabet = alphabet;
+		b.initial = 0;
 //		for (Iterator i = t.iterator(); i.hasNext();) {
 //			Set p = (Set) i.next();
 //			for (Iterator j = p.iterator(); j.hasNext();) {
@@ -278,6 +279,7 @@ public class NFA {
 //					b.terminal.transfer(t.indexOf(p), 0, 1);
 //			}
 //		}
+//		System.out.println(b);
 		return b;
 	}
 
@@ -355,7 +357,7 @@ public class NFA {
 	public static void main(String[] args) {
 		System.out.println("Digite a string");
 		NFA b = leString();
-		System.out.println(b);
+//		System.out.println(b);
 		b.toDFA();
 	}
 

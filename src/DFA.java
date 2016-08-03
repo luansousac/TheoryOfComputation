@@ -65,49 +65,6 @@ public class DFA {
 		return 1 + m;
 	}
 
-	static DFA makeit(int choix) {
-		Alphabet al = new Alphabet(2);
-		if (choix == 1) {
-			DFA a = new DFA(7, al); 
-			int[] t = new int[] { 1, 1, 1, 1, 1, 0, 1 };
-			a.next[0][0] = 0;
-			a.next[0][1] = 0;
-			a.next[1][0] = 2;
-			a.next[1][1] = 5;
-			a.next[2][0] = 3;
-			a.next[2][1] = 0;
-			a.next[3][0] = 3;
-			a.next[3][1] = 4;
-			a.next[4][0] = 3;
-			a.next[4][1] = 0;
-			a.next[5][0] = 6;
-			a.next[5][1] = 0;
-			a.next[6][0] = 0;
-			a.next[6][1] = 5;
-			// a.t[1]=a.t[2]=a.t[3]= a.t[4]= a.t[6]=1;
-			a.terminal = new Partition(t);
-			return a;
-		} else {
-			DFA a = new DFA(7, al);
-			a.next[0][0] = 1;
-			a.next[0][1] = 2;
-			a.next[1][0] = 3;
-			a.next[1][1] = 5;
-			a.next[2][0] = 5;
-			a.next[2][1] = 4;
-			a.next[3][0] = 6;
-			a.next[3][1] = 6;
-			a.next[4][0] = 6;
-			a.next[4][1] = 4;
-			a.next[5][0] = 6;
-			a.next[5][1] = 6;
-			a.next[6][0] = 6;
-			a.next[6][1] = 6;
-			// a.t[1]=a.t[3]=a.t[5]= a.t[6]=1;
-			return a;
-		}
-	}
-
 	/* Descrição do AFD */
 	public String toString() {
 		String s  = "q = " + initial  + "\n";
@@ -129,9 +86,9 @@ public class DFA {
 
 	public static void main(String[] args) throws Exception {
 		DFA a;
-		a = makeit(1);
+		//a = makeit(1);
 //		 a.show();
-		System.out.println(a);
+//		System.out.println(a);
 	}
 
 }

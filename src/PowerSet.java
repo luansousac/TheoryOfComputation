@@ -11,6 +11,7 @@ public class PowerSet {
 
 		if (originalSet.isEmpty()) {
 			sets.add(new HashSet<T>());
+			System.out.println("entrou no if");
 			return sets;
 		}
 
@@ -21,8 +22,8 @@ public class PowerSet {
 			Set<T> newSet = new HashSet<T>();
 			newSet.add(head);
 			newSet.addAll(set);
-			sets.add(newSet);
 			sets.add(set);
+			sets.add(newSet);
 		}
 		return sets;
 	}
